@@ -1,0 +1,40 @@
+import { Router, Request, Response } from 'express';
+import { registerUser, loginUser, registerSchema, loginSchema } from './auth.service';
+
+const router = Router();
+
+router.post('/register', async (req: Request, res: Response) => {
+  try {
+    const validatedData = registerSchema.parse(req.body);
+    const user = await registerUser(validatedData);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...userWithoutPassword } = user;
+    res.status(201).json(userWithoutPassword);
+  } catch (error: any) {
+    if (error.message === 'User already exists with this email') {
+        return res.status(409).json({ message: error.message });
+    }
+    if (error.errors) { // Zod validation error
+        return res.status(400).json({ message: 'Validation failed', errors: error.format() });
+    }
+    res.status(500).json({ message: 'Error registering user', error: error.message });
+  }
+});
+
+router.post('/login', async (req: Request, res: Response) => {
+  try {
+    const validatedData = loginSchema.parse(req.body);
+    const result = await loginUser(validatedData);
+    res.status(200).json(result);
+  } catch (error: any) {
+    if (error.message === 'Invalid email or password') {
+        return res.status(401).json({ message: error.message });
+    }
+    if (error.errors) { // Zod validation error
+        return res.status(400).json({ message: 'Validation failed', errors: error.format() });
+    }
+    res.status(500).json({ message: 'Error logging in', error: error.message });
+  }
+});
+
+export default router;
