@@ -20,14 +20,25 @@ app.get('/protected', ensureAuth, (req: AuthenticatedRequest, res: express.Respo
 });
 
 // Example admin-only route
-app.get('/admin', ensureAuth, ensureRole([Roles.ADMIN]), (req: AuthenticatedRequest, res) => {
-  res.json({ message: 'This is an admin-only route', user: req.user });
-});
+app.get(
+  '/admin',
+  ensureAuth,
+  ensureRole([Roles.ADMIN]),
+  (req: AuthenticatedRequest, res) => {
+    res.json({ message: 'This is an admin-only route', user: req.user });
+  }
+);
 
-// Example technician or admin route
-app.get('/technician-area', ensureAuth, ensureRole([Roles.ADMIN, Roles.TECHNICIAN]), (req: AuthenticatedRequest, res: express.Response) => {
+app.get(
+  '/technician-area',
+  ensureAuth,
+  ensureRole([Roles.ADMIN, Roles.TECHNICIAN]),
+  (req: AuthenticatedRequest, res) => {
     res.json({ message: 'This is for technicians and admins', user: req.user });
-});
+  }
+);
+
+
 
 app.get('/', (req, res) => {
   res.send('Hello from 6ticket API!');
