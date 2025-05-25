@@ -1,9 +1,6 @@
-import { User as PrismaUser, Role as PrismaRole } from '@prisma/client';
+export type Role = 'ADMIN' | 'TECHNICIAN';
 
-export type User = PrismaUser;
-export type Role = PrismaRole;
-
-export const Roles: Record<PrismaRole, PrismaRole> = {
+export const Roles: Record<Role, Role> = {
   ADMIN: 'ADMIN',
   TECHNICIAN: 'TECHNICIAN',
 };
