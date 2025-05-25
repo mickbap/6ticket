@@ -6,6 +6,7 @@ import { ensureAuth, AuthenticatedRequest } from '@/middlewares/ensureAuth';
 import { ensureRole } from '@/middlewares/ensureRole';
 import { Roles } from '@/modules/users/user.model';
 import { asyncHandler } from '@/utils/asyncHandler';
+import { createTicketHandler } from '@/modules/tickets/ticket.controller';
 
 const app = express();
 
@@ -38,7 +39,7 @@ app.get(
   }
 );
 
-
+app.post('/tickets', ensureAuth, asyncHandler(createTicketHandler));
 
 app.get('/', (req, res) => {
   res.send('Hello from 6ticket API!');

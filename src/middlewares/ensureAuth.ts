@@ -3,7 +3,7 @@ import { verifyToken } from '@/auth/jwt';
 import { findUserById } from '@/modules/users/user.service';
 
 export interface AuthenticatedRequest extends Request {
-  user?: {
+  user: {
     id: string;
     role: string;
   };

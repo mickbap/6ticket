@@ -20,3 +20,34 @@ model User {
   role     Role
   createdAt DateTime @default(now())
 }
+
+model Ticket {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  priority    Priority
+  origin      Origin
+  status      Status   @default(ABERTO)
+  createdAt   DateTime @default(now())
+  createdById String
+  createdBy   User     @relation(fields: [createdById], references: [id])
+}
+
+enum Priority {
+  BAIXA
+  MÉDIA
+  ALTA
+  URGENTE
+}
+
+enum Origin {
+  INTERNAL
+  EXTERNAL
+}
+
+enum Status {
+  ABERTO
+  EM_ANDAMENTO
+  CONCLUIDO
+  CANCELADO
+}
